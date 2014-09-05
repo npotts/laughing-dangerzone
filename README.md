@@ -24,3 +24,4 @@ Collection
 1. [png2ico](https://github.com/npotts/laughing-dangerzone/tree/master/png2ico "png2ico") Convert large scale (1024x1024 
 and greater) images into a multi-sized .ico to be included in windows .ico files
 1. [slowcat](https://github.com/npotts/laughing-dangerzone/tree/master/slowcat "slowcat") A slow (as in not greedy) version of cat.  Found somewhere online and wished I kept the original source.
+1. [openwrt](https://github.com/npotts/laughing-dangerzone/tree/master/openwrt "openwrt") Openwrt helper script(s) - particularly when working with my awesomely obsolete and overpowered [rspro](http://wiki.openwrt.org/toh/ubiquiti/routerstation.pro "rspro")
