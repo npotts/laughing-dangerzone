@@ -16,17 +16,20 @@ Prep Work - Creating ~/.channels.ini
 
 Unfortunately, you will need to do some legwork here. The first thing you will need to do is collect a list of channels, programs, and the network.  You will need to create ~/.channels.ini in a format like thus:
 
-[Network Name]
+``` ini
+[Network Name]	
 channel=7
 program=3
+```
 
 There are websites that can help with this, but overall, its just better to do it manually.
 
 Installation
 ------------
 
-1. Create ~/.channels.ini
+1. Create (or modify my) ~/.channels.ini
 1. Run ChannelChooser
+1. Profit!
 
 Screenshot
 ----------
