@@ -21,4 +21,6 @@ Collection
 1. [tmux-colors](https://github.com/npotts/laughing-dangerzone/tree/master/tmux-colors "Tmux Colors") - A simple script I got off some forum somewhere that prints out all the tmux color combinations based on your $TERM and other parameters
 1. [hdhomerun](https://github.com/npotts/laughing-dangerzone/tree/master/hdhomerun "Ub3r simple HDhomerun") Very simple GUI that has channel names rather than numbers and subchannels.  Makes the wife happy.
 1. [socat-serial-ports](https://github.com/npotts/laughing-dangerzone/tree/master/socat-serial-ports "Socat Virtual Serial Ports") Quickly and easily create virtual serial port pairs
-1. [png2ico](https://github.com/npotts/laughing-dangerzone/tree/master/png2ico "png2ico") Convert large scale (1024x1024 and greater) images into a multi-sized .ico to be included in windows .ico files
+1. [png2ico](https://github.com/npotts/laughing-dangerzone/tree/master/png2ico "png2ico") Convert large scale (1024x1024 
+and greater) images into a multi-sized .ico to be included in windows .ico files
+1. [slowcat](https://github.com/npotts/laughing-dangerzone/tree/master/slowcat "slowcat") A slow (as in not greedy) version of cat.  Found somewhere online and wished I kept the original source.
