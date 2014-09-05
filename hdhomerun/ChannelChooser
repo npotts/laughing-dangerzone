@@ -1,0 +1,67 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# A really simple interface to HDhomerun so the
+# non-technical wife can easily change the channels
+
+import sys
+from os import fork, system
+import PyQt4
+from PyQt4 import QtGui, QtCore, uic
+from os.path import expanduser
+try:
+    import configparser as cfg
+except:
+    import ConfigParser as cfg
+
+class eztv:
+    id = "103CDCC4"
+    tuner=0
+    ui_file = """<?xml version="1.0" encoding="UTF-8"?><ui version="4.0"> <class>MainWindow</class> <widget class="QMainWindow" name="MainWindow">  <property name="geometry">   <rect>    <x>0</x>    <y>0</y>    <width>654</width>    <height>178</height>   </rect>  </property>  <property name="windowTitle">   <string>Channel Chooser</string>  </property>  <widget class="QWidget" name="centralwidget">   <layout class="QGridLayout" name="gridLayout">    <item row="0" column="1">     <spacer name="horizontalSpacer">      <property name="orientation">       <enum>Qt::Horizontal</enum>      </property>      <property name="sizeHint" stdset="0">       <size>        <width>40</width>        <height>1</height>       </size>      </property>     </spacer>    </item>    <item row="1" column="1">     <widget class="QComboBox" name="_ez"/>    </item>    <item row="1" column="0">     <widget class="QLabel" name="label">      <property name="text">       <string>EZ Select</string>      </property>     </widget>    </item>    <item row="2" column="0">     <widget class="QLabel" name="label_2">      <property name="text">       <string>Channel</string>      </property>     </widget>    </item>    <item row="2" column="1">     <widget class="QSpinBox" name="_chan"/>    </item>    <item row="3" column="1">     <widget class="QSpinBox" name="_prog"/>    </item>    <item row="3" column="0">     <widget class="QLabel" name="label_3">      <property name="text">       <string>Program</string>      </property>     </widget>    </item>    <item row="1" column="2" rowspan="3">     <widget class="QPushButton" name="_force">      <property name="text">       <string>Force</string>      </property>     </widget>    </item>   </layout>  </widget>  <widget class="QMenuBar" name="menubar">   <property name="geometry">    <rect>     <x>0</x>     <y>0</y>     <width>654</width>     <height>33</height>    </rect>   </property>  </widget> </widget> <tabstops>  <tabstop>_ez</tabstop>  <tabstop>_chan</tabstop>  <tabstop>_force</tabstop>  <tabstop>_prog</tabstop> </tabstops> <resources/> <connections/></ui>"""
+    
+    def __init__(self):
+        """Initialize everything, signals to functions, and read ~/.channels.ini for channel information"""
+        #get the channel listings working
+        c = cfg.ConfigParser()
+        c.read(expanduser("~/.channels.ini"))
+        l = []
+        self.channels = {};
+        for i in c.sections():
+            try:
+                self.channels[i] = {"channel": c.getint(i, "channel"), "program": c.getint(i, "program") }
+                l.append(i)
+            except Exception as e:
+                print(e)
+                pass
+        l.sort()
+        
+        #do crap to get the GUI up
+        t = open("/tmp/ui.ui", "w")
+        t.write(self.ui_file)
+        t.close()
+        self.w = PyQt4.uic.loadUi("/tmp/ui.ui")
+        print(l)
+        self.w._ez.addItems(l)
+        self.w._ez.currentIndexChanged.connect(self.selectItem)
+        self.w._force.clicked.connect(self.changeChannel)
+        self.w.show()
+
+        #spawn VLC
+        if (fork() == 0): #child process
+            system("hdhomerun_config %s save /tuner%d - | vlc -" % (self.id, self.tuner))
+
+    def selectItem(self):
+        """Change selection"""
+        sel = str(self.w._ez.currentText())
+        self.w._chan.setValue(self.channels[sel]["channel"])
+        self.w._prog.setValue(self.channels[sel]["program"])
+        self.changeChannel()
+        
+    def changeChannel(self):
+        """Actually change channel"""
+        system("hdhomerun_config %s set /tuner%d/channel %d" % (self.id, self.tuner, self.w._chan.value()))
+        system("hdhomerun_config %s set /tuner%d/program %d" % (self.id, self.tuner, self.w._prog.value()))
+        
+if __name__ == '__main__':
+    app = QtGui.QApplication(sys.argv)
+    ex = eztv()
+    sys.exit(app.exec_())
