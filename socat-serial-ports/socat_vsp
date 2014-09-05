@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Connect to either /tmp/in or /tmp/out"
+echo "Connect to either /tmp/in2 or /tmp/out2"
+
+socat PTY,link=/tmp/in,raw,echo=0  PTY,link=/tmp/out,raw,echo=0 &
+socat PTY,link=/tmp/in2,raw,echo=0 PTY,link=/tmp/out2,raw,echo=0 &
